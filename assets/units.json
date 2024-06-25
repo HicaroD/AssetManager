@@ -1,0 +1,17 @@
+{
+  "units": [
+    {
+      "name": "Jaguar Unit",
+      "path": "assets/units/jaguar/"
+    },
+    {
+      "name": "Tobias Unit",
+      "path": "assets/units/tobias/"
+    },
+    {
+      "name": "Apex Unit",
+      "path": "assets/units/apex/"
+    }
+  ]
+}
+
