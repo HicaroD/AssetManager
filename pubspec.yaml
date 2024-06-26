@@ -20,9 +20,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    # Icons
-    - assets/icons/asset.png
-    - assets/icons/component.png
-    - assets/icons/location.png
-    # Assets
-    - assets/units.json
+    - assets/units/apex/
