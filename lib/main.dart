@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'pages/assets.dart';
 import 'pages/home.dart';
 
 void main() {
@@ -13,11 +14,10 @@ class AssetManager extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tractian',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(title: 'Tractian'),
+      routes: {
+        "/": (context) => const HomePage(title: 'Tractian'),
+        "/unit": (context) => const AssetsPage(title: 'Assets'),
+      },
     );
   }
 }
