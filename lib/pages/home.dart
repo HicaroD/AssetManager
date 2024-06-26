@@ -12,17 +12,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String get title => widget.title;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: TractianColors.darkBlue,
-        title: Text(widget.title),
+        centerTitle: true,
+        title: Text(title),
       ),
+      backgroundColor: TractianColors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          children: <Widget>[
+            ElevatedButton(
+              child: const Text("Go to unit"),
+              onPressed: () => Navigator.pushNamed(context, "/unit"),
+            ),
+          ],
         ),
       ),
     );
