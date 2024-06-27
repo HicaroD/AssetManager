@@ -82,4 +82,9 @@ class Assets extends Item {
       sensorType: sensorType,
     );
   }
+
+  @override
+  String getName() {
+    return name;
+  }
 }

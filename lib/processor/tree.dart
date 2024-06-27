@@ -18,7 +18,9 @@ class Tree {
   ) {
     Tree assetsTree = _buildAssetsTree(assets);
 
-    assets.forEach((assetKey, asset) {
+    for (final assetEntry in assets.entries) {
+      final assetKey = assetEntry.key;
+      final asset = assetEntry.value;
       if (asset.parentType == ParentType.root) {
         _addNodeToRoot(assetKey, Node(asset));
       } else if (asset.parentType == ParentType.location) {
@@ -40,7 +42,7 @@ class Tree {
           _addAssetToLocation(currentLocation, assetKey, currentAssetNode);
         }
       }
-    });
+    }
   }
 
   void _addNodeToRoot(String assetKey, Node node) {
@@ -92,6 +94,4 @@ class Tree {
   }
 }
 
-class Asset {
-}
-
+class Asset {}

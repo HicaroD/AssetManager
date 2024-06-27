@@ -7,7 +7,9 @@ import 'assets.dart';
 import 'location.dart';
 import 'tree.dart';
 
-abstract class Item {}
+abstract class Item {
+  String getName();
+}
 
 // TODO: remove the necessity of having two methods
 // They are too similar, we only need one

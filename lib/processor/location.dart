@@ -25,5 +25,9 @@ class Location extends Item {
       parentId: parentId,
     );
   }
-}
 
+  @override
+  String getName() {
+    return name;
+  }
+}
