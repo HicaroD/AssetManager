@@ -1,3 +1,4 @@
+import 'package:assets/widgets/asset_tree.dart';
 import 'package:flutter/material.dart';
 
 import '../processor/processor.dart';
@@ -26,29 +27,25 @@ class _AssetsPageState extends State<AssetsPage> {
         centerTitle: true,
         title: Text(title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FutureBuilder(
-              future: getTree(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
-                }
+      body: Column(
+        children: <Widget>[
+          FutureBuilder(
+            future: getTree(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              }
 
-                if (snapshot.hasError) {
-                  final error = snapshot.error.toString();
-                  return Text("Error: $error");
-                }
+              if (snapshot.hasError) {
+                final error = snapshot.error.toString();
+                return Text("Error: $error");
+              }
 
-                final tree = snapshot.data!.root;
-                // TODO: return tree widget
-                return const Text("Loaded successfuly");
-              },
-            ),
-          ],
-        ),
+              final tree = snapshot.data!;
+              return AssetTree(tree: tree);
+            },
+          ),
+        ],
       ),
     );
   }
