@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../tree/items.dart';
+import '../utils/icons.dart';
 
 class AssetTree extends StatelessWidget {
   final Item item;
@@ -12,36 +13,53 @@ class AssetTree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return item.name == "root"
-        ? Children(children: item.children)
-        : ExpansionTile(
-            title: Text(item.name),
-            children: <Widget>[
-              Children(children: item.children),
-            ],
-          );
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: item.children.length,
+        itemBuilder: (context, index) {
+          final key = item.children.keys.elementAt(index);
+          return ItemTile(item: item.children[key]!, paddingLevel: 1);
+        },
+      ),
+    );
   }
 }
 
-class Children extends StatelessWidget {
-  final Map<String, Item> children;
+class ItemTile extends StatelessWidget {
+  final Item item;
+  final double paddingLevel;
 
-  const Children({
+  const ItemTile({
     super.key,
-    required this.children,
+    required this.item,
+    required this.paddingLevel,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: children.length,
-        itemBuilder: (context, index) {
-          final key = children.keys.elementAt(index);
-          return AssetTree(item: children[key]!);
-        },
-      ),
-    );
+    return item.children.isNotEmpty
+        ? ExpansionTile(
+            title: Text(item.name),
+            leading: TractianIcons.fromItemType(item.type),
+            childrenPadding: EdgeInsets.only(left: 5 * paddingLevel),
+            children: <Widget>[
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: item.children.length,
+                itemBuilder: (context, index) {
+                  final key = item.children.keys.elementAt(index);
+                  return ItemTile(
+                    item: item.children[key]!,
+                    paddingLevel: paddingLevel + 1,
+                  );
+                },
+              ),
+            ],
+          )
+        : ListTile(
+            title: Text(item.name),
+            leading: TractianIcons.fromItemType(item.type),
+          );
   }
 }

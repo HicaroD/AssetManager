@@ -5,6 +5,7 @@ class Tree {
   final Item root = Root(
     "",
     "root",
+    ItemType.root,
     ParentType.root,
     "",
   );

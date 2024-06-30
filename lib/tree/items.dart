@@ -4,14 +4,22 @@ enum ParentType {
   asset,
 }
 
+enum ItemType {
+  root,
+  location,
+  asset,
+  component,
+}
+
 abstract class Item {
   final String id;
   final String name;
+  final ItemType type;
   final ParentType parentType;
   final String? parentId;
   Map<String, Item> children = {};
 
-  Item(this.id, this.name, this.parentType, this.parentId);
+  Item(this.id, this.name, this.type, this.parentType, this.parentId);
 
   void addChildren(Item item) {
     // NOTE: I need to update or add, if necessary
@@ -24,16 +32,17 @@ abstract class Item {
 }
 
 class Root extends Item {
-  Root(super.id, super.name, super.parentType, super.parentId);
+  Root(super.id, super.name, super.type, super.parentType, super.parentId);
 }
 
 class Asset extends Item {
   Asset({
     required String id,
     required String name,
+    ItemType type = ItemType.asset,
     required ParentType parentType,
     required String? parentId,
-  }) : super(id, name, parentType, parentId);
+  }) : super(id, name, type, parentType, parentId);
 
   factory Asset.fromJson(Map<String, dynamic> json) {
     final id = json["id"];
@@ -69,7 +78,7 @@ class Asset extends Item {
 
     return Asset(
       id: id,
-      name: id,
+      name: name,
       parentType: parentType,
       parentId: parentId ?? locationId,
     );
@@ -93,6 +102,7 @@ class Component extends Asset {
   Component({
     required super.id,
     required super.name,
+    super.type = ItemType.component,
     required super.parentType,
     required this.status,
     required this.sensorType,
@@ -106,7 +116,7 @@ class Location extends Item {
     required String name,
     ParentType parentType = ParentType.root,
     required String? parentId,
-  }) : super(id, name, parentType, parentId);
+  }) : super(id, name, ItemType.location, parentType, parentId);
 
   factory Location.fromJson(Map<String, dynamic> json) {
     final name = json["name"];
