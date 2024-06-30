@@ -29,7 +29,7 @@ class _AssetsPageState extends State<AssetsPage> {
         title: Text(title),
       ),
       body: FutureBuilder(
-        future: getTree("assets/units/apex"),
+        future: getTree("assets/units/jaguar"),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();

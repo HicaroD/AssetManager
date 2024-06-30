@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../tree/items.dart';
 import '../utils/icons.dart';
+import 'item_name.dart';
 
 class AssetTree extends StatelessWidget {
   final Item item;
@@ -40,8 +41,9 @@ class ItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return item.children.isNotEmpty
         ? ExpansionTile(
-            title: Text(item.name),
-            leading: TractianIcons.fromItemType(item.type),
+            title: ItemName(name: item.name, type: item.type),
+            shape: const Border(),
+            controlAffinity: ListTileControlAffinity.leading,
             childrenPadding: EdgeInsets.only(left: 5 * paddingLevel),
             children: <Widget>[
               ListView.builder(
@@ -63,3 +65,4 @@ class ItemTile extends StatelessWidget {
           );
   }
 }
+
