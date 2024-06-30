@@ -1,7 +1,7 @@
 import 'package:assets/widgets/asset_tree.dart';
 import 'package:flutter/material.dart';
 
-import '../processor/processor.dart';
+import '../tree/tree.dart';
 import '../utils/colors.dart';
 
 class AssetsPage extends StatefulWidget {
@@ -22,30 +22,25 @@ class _AssetsPageState extends State<AssetsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: TractianColors.darkBlue,
         centerTitle: true,
         title: Text(title),
       ),
-      body: Column(
-        children: <Widget>[
-          FutureBuilder(
-            future: getTree(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              }
-
-              if (snapshot.hasError) {
-                final error = snapshot.error.toString();
-                return Text("Error: $error");
-              }
-
-              final tree = snapshot.data!;
-              return AssetTree(tree: tree);
-            },
-          ),
-        ],
+      body: FutureBuilder(
+        future: getTree("assets/units/apex"),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            final error = snapshot.error.toString();
+            return Text("Error: $error");
+          }
+          final tree = snapshot.data!;
+          return AssetTree(item: tree.root);
+        },
       ),
     );
   }

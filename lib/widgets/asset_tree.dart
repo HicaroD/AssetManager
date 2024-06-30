@@ -1,89 +1,47 @@
 import 'package:flutter/material.dart';
 
-import '../processor/location.dart';
-import '../processor/tree.dart';
+import '../tree/items.dart';
 
-class AssetTree extends StatefulWidget {
-  final Tree tree;
+class AssetTree extends StatelessWidget {
+  final Item item;
 
   const AssetTree({
     super.key,
-    required this.tree,
+    required this.item,
   });
 
   @override
-  State<AssetTree> createState() => _AssetTreeState();
-}
-
-class _AssetTreeState extends State<AssetTree> {
-  Tree get tree => widget.tree;
-
-  @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: const ClampingScrollPhysics(),
-        itemCount: tree.root.length,
-        itemBuilder: (context, index) {
-          final nodes = tree.root;
-
-          final nodeKey = nodes.keys.elementAt(index);
-          final currentNode = nodes[nodeKey]!;
-
-          final nodeChildren = currentNode.children.values;
-
-          return ExpansionTile(
-            title: Text(currentNode.item.getName()),
+    return item.name == "root"
+        ? Children(children: item.children)
+        : ExpansionTile(
+            title: Text(item.name),
             children: <Widget>[
-              for (final nodeChild in nodeChildren)
-                ChildrenTree(child: nodeChild),
+              Children(children: item.children),
             ],
           );
-        },
-      ),
-    );
   }
 }
 
-class ChildrenTree extends StatefulWidget {
-  final Node child;
+class Children extends StatelessWidget {
+  final Map<String, Item> children;
 
-  const ChildrenTree({
+  const Children({
     super.key,
-    required this.child,
+    required this.children,
   });
 
   @override
-  State<ChildrenTree> createState() => _ChildrenTreeState();
-}
-
-class _ChildrenTreeState extends State<ChildrenTree> {
-  Node get child => widget.child;
-
-  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const ClampingScrollPhysics(),
-      itemCount: child.children.length,
-      itemBuilder: (context, index) {
-        final children = child.children;
-        final childrenKey = children.keys.elementAt(index);
-
-        final current = children[childrenKey]!;
-        final currentItem = current.item;
-
-        return ExpansionTile(
-          title: Text(child.item.getName()),
-          children: <Widget>[
-            if (currentItem is Asset)
-              Text("Asset '${currentItem.getName()}'")
-            else if (currentItem is Location)
-              ChildrenTree(child: current)
-          ],
-        );
-      },
+    return SingleChildScrollView(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: children.length,
+        itemBuilder: (context, index) {
+          final key = children.keys.elementAt(index);
+          return AssetTree(item: children[key]!);
+        },
+      ),
     );
   }
 }
