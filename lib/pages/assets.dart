@@ -22,12 +22,19 @@ class _AssetsPageState extends State<AssetsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: TractianColors.white),
         backgroundColor: TractianColors.darkBlue,
         centerTitle: true,
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: TractianColors.white,
+          ),
+        ),
       ),
+      backgroundColor: TractianColors.white,
+      resizeToAvoidBottomInset: true,
       body: FutureBuilder(
         future: getTree("assets/units/jaguar"),
         builder: (context, snapshot) {

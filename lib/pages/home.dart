@@ -18,9 +18,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: TractianColors.white),
         backgroundColor: TractianColors.darkBlue,
         centerTitle: true,
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: TractianColors.white,
+          ),
+        ),
       ),
       backgroundColor: TractianColors.white,
       body: Center(
