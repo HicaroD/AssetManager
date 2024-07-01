@@ -41,7 +41,6 @@ class _AssetTreeState extends State<AssetTree> {
                 ),
                 hintText: "Buscar Ativo ou Local",
               ),
-              // TODO: analyze performance here
               onChanged: (input) => setState(() {}),
             ),
           ),
@@ -125,6 +124,12 @@ class Children extends StatelessWidget {
       itemBuilder: (context, index) {
         final key = item.children.keys.elementAt(index);
         final child = item.children[key]!;
+
+        if (itemNameDoesNotContainInput(child) ||
+            itemDoesntMatchAnyComponentFilter(child)) {
+          return Container();
+        }
+
         return ItemTile(
           item: child,
           paddingLevel: paddingLevel + 1,
@@ -133,6 +138,33 @@ class Children extends StatelessWidget {
         );
       },
     );
+  }
+
+  bool itemDoesntMatchAnyComponentFilter(Item item) {
+    if (item.type != ItemType.component) {
+      return false;
+    }
+
+    Component component = item as Component;
+    if (selectedFilter == Filter.none) {
+      return false;
+    }
+
+    if ((selectedFilter == Filter.energy &&
+            component.sensorType == ComponentSensorType.energy) ||
+        (selectedFilter == Filter.alert &&
+            component.status == ComponentStatus.alert)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  bool itemNameDoesNotContainInput(Item item) {
+    if (item.type != ItemType.component && item.children.isNotEmpty) {
+      return false;
+    }
+    return !item.name.toLowerCase().contains(textInputFilter.toLowerCase());
   }
 }
 
@@ -153,10 +185,6 @@ class ItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (itemNameDoesNotContainInput() || itemDoesntMatchAnyComponentFilter()) {
-      return Container();
-    }
-
     final collapsedIconColor =
         item.children.isEmpty ? Colors.transparent : null;
 
@@ -166,7 +194,6 @@ class ItemTile extends StatelessWidget {
             title: ItemName(item: item),
             shape: const Border(),
             controlAffinity: ListTileControlAffinity.leading,
-            // TODO: fix left padding for item that has no children
             childrenPadding: EdgeInsets.only(left: 10 + paddingLevel),
             collapsedIconColor: collapsedIconColor,
             iconColor: collapsedIconColor,
@@ -179,32 +206,5 @@ class ItemTile extends StatelessWidget {
               ),
             ],
           );
-  }
-
-  bool itemDoesntMatchAnyComponentFilter() {
-    if (item.type != ItemType.component) {
-      return false;
-    }
-
-    Component component = item as Component;
-    if (selectedFilter == Filter.none) {
-      return false;
-    }
-
-    if ((selectedFilter == Filter.energy &&
-            component.sensorType == ComponentSensorType.energy) ||
-        (selectedFilter == Filter.alert &&
-            component.status == ComponentStatus.alert)) {
-      return false;
-    }
-
-    return true;
-  }
-
-  bool itemNameDoesNotContainInput() {
-    if (item.type != ItemType.component && item.children.isNotEmpty) {
-      return false;
-    }
-    return !item.name.toLowerCase().contains(textInputFilter.toLowerCase());
   }
 }

@@ -14,6 +14,8 @@ class AssetsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final unitPath = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: TractianColors.white),
@@ -29,7 +31,7 @@ class AssetsPage extends StatelessWidget {
       backgroundColor: TractianColors.white,
       resizeToAvoidBottomInset: true,
       body: FutureBuilder(
-        future: getTree("assets/units/jaguar"),
+        future: getTree(unitPath),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();

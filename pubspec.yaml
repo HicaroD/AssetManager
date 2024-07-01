@@ -19,6 +19,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/
     - assets/units/jaguar/
     - assets/units/apex/
     - assets/units/tobias/

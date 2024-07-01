@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../tree/tree.dart';
 import '../utils/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,8 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String get title => widget.title;
-
-  late List<Unit> units;
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +31,33 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: TractianColors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              child: const Text("Go to unit"),
-              onPressed: () => Navigator.pushNamed(context, "/unit"),
-            ),
-          ],
+        child: FutureBuilder(
+          future: readUnits(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            }
+            if (snapshot.hasError) {
+              return Text("Error: ${snapshot.error}");
+            }
+            final units = snapshot.data!;
+            return ListView.builder(
+              itemCount: units.length,
+              itemBuilder: (context, index) {
+                final unit = units[index];
+                return ElevatedButton(
+                  child: Text(unit.name),
+                  onPressed: () => Navigator.pushNamed(
+                    context,
+                    "/assets",
+                    arguments: unit.path,
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );
-  }
-}
-
-class Unit {
-  final String name;
-  final String path;
-
-  Unit(this.name, this.path);
-
-  // TODO: get list of units from units.json on assets folder
-  static List<Unit> fromJson(unitPath) {
-    return [];
   }
 }

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
+
 import 'items.dart';
 import 'reader.dart';
 
@@ -42,6 +46,26 @@ class Tree {
   }
 }
 
+class Unit {
+  final String name;
+  final String path;
+
+  Unit(this.name, this.path);
+
+  static List<Unit> fromJson(Map<String, dynamic> units) {
+    return (units["units"] as List<dynamic>)
+        .map((unit) => Unit(unit["name"], unit["path"]))
+        .toList();
+  }
+}
+
+Future<List<Unit>> readUnits() async {
+  final unitsFile = await rootBundle.loadString("assets/units.json");
+  final unitsJson = jsonDecode(unitsFile);
+  final units = Unit.fromJson(unitsJson);
+  return units;
+}
+
 Future<Tree> getTree(String unitPath) async {
   final reader = Reader(unitPath: unitPath);
   final data = await Future.wait([
@@ -56,4 +80,3 @@ Future<Tree> getTree(String unitPath) async {
   tree.build();
   return tree;
 }
-

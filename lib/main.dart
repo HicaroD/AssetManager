@@ -20,7 +20,7 @@ class AssetManager extends StatelessWidget {
       ),
       routes: {
         "/": (context) => const HomePage(title: 'Tractian'),
-        "/unit": (context) => const AssetsPage(title: 'Assets'),
+        "/assets": (context) => const AssetsPage(title: 'Assets'),
       },
     );
   }
