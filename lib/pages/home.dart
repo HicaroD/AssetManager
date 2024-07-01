@@ -14,6 +14,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String get title => widget.title;
 
+  late List<Unit> units;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,5 +43,17 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+}
+
+class Unit {
+  final String name;
+  final String path;
+
+  Unit(this.name, this.path);
+
+  // TODO: get list of units from units.json on assets folder
+  static List<Unit> fromJson(unitPath) {
+    return [];
   }
 }

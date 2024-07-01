@@ -4,20 +4,13 @@ import 'package:flutter/material.dart';
 import '../tree/tree.dart';
 import '../utils/colors.dart';
 
-class AssetsPage extends StatefulWidget {
+class AssetsPage extends StatelessWidget {
   final String title;
 
   const AssetsPage({
     super.key,
     required this.title,
   });
-
-  @override
-  State<AssetsPage> createState() => _AssetsPageState();
-}
-
-class _AssetsPageState extends State<AssetsPage> {
-  String get title => widget.title;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +36,7 @@ class _AssetsPageState extends State<AssetsPage> {
           }
           if (snapshot.hasError) {
             final error = snapshot.error.toString();
-            return Text("Error: $error");
+            return Center(child: Text("Error: $error"));
           }
           final tree = snapshot.data!;
           return AssetTree(item: tree.root);
