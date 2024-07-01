@@ -92,7 +92,7 @@ class _AssetTreeState extends State<AssetTree> {
           ),
           Children(
             item: item,
-            paddingLevel: 1,
+            paddingLevel: 0,
             textInputFilter: _textInputController.text,
             selectedFilter: _selectedFilter,
           ),
@@ -160,23 +160,25 @@ class ItemTile extends StatelessWidget {
     final collapsedIconColor =
         item.children.isEmpty ? Colors.transparent : null;
 
-    return ExpansionTile(
-      title: ItemName(item: item),
-      shape: const Border(),
-      controlAffinity: ListTileControlAffinity.leading,
-      // TODO: fix left padding for item that has no children
-      childrenPadding: EdgeInsets.only(left: 10 + paddingLevel),
-      collapsedIconColor: collapsedIconColor,
-      iconColor: collapsedIconColor,
-      children: <Widget>[
-        Children(
-          item: item,
-          paddingLevel: paddingLevel,
-          textInputFilter: textInputFilter,
-          selectedFilter: selectedFilter,
-        ),
-      ],
-    );
+    return item.children.isEmpty && paddingLevel == 1
+        ? ListTile(title: ItemName(item: item))
+        : ExpansionTile(
+            title: ItemName(item: item),
+            shape: const Border(),
+            controlAffinity: ListTileControlAffinity.leading,
+            // TODO: fix left padding for item that has no children
+            childrenPadding: EdgeInsets.only(left: 10 + paddingLevel),
+            collapsedIconColor: collapsedIconColor,
+            iconColor: collapsedIconColor,
+            children: <Widget>[
+              Children(
+                item: item,
+                paddingLevel: paddingLevel,
+                textInputFilter: textInputFilter,
+                selectedFilter: selectedFilter,
+              ),
+            ],
+          );
   }
 
   bool itemDoesntMatchAnyComponentFilter() {
