@@ -134,14 +134,6 @@ class Children extends StatelessWidget {
       },
     );
   }
-
-  // bool itemNameContainsInput() {
-  //   return item.name.toLowerCase().contains(textInputFilter.toLowerCase());
-  // }
-  //
-  // bool itemTypeIsLocation() {
-  //   return item.type == ItemType.location || item.type == ItemType.root;
-  // }
 }
 
 class ItemTile extends StatelessWidget {
@@ -151,15 +143,12 @@ class ItemTile extends StatelessWidget {
   final String textInputFilter;
   final Filter selectedFilter;
 
-  final bool visible;
-
   const ItemTile({
     super.key,
     required this.item,
     required this.paddingLevel,
     required this.textInputFilter,
     required this.selectedFilter,
-    this.visible = true,
   });
 
   @override
@@ -211,7 +200,7 @@ class ItemTile extends StatelessWidget {
   }
 
   bool itemNameDoesNotContainInput() {
-    if(item.type != ItemType.component && item.children.isNotEmpty) {
+    if (item.type != ItemType.component && item.children.isNotEmpty) {
       return false;
     }
     return !item.name.toLowerCase().contains(textInputFilter.toLowerCase());
